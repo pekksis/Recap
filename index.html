@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <p>I will be loaded before scripts are loaded.</p>
+    <button onclick="buttonPressed()">Click me</button>
+
+    <p id = "output"></p>
+
+<!--Browser will load everything in the order they are inside body tags.
+    Pointing to external JS file does the same thing as writing the code
+    inside the script tags.-->
+    <script>
+    //Code will be executed in the order it is here. Comment lines will be ignored
+    //Code inside functions WILL NOT be executed until they are CALLED.
+
+    console.log(cat); //undefined because the variable doesn't exist yet.
+    var cat = "cat"; //var=keyword, telling browser that the next word will be a variable
+    console.log(cat); //cat has value "cat". Name of the variable could be anything though.
+
+    doSomething(); //Will call function with this name and execute code inside it.
+                  //This does the same thing as having body onload="doSomething()"
+
+
+
+    function doSomething(){
+
+      var arrayWithStuff = ["dog", 32, 64, "cat"];
+
+      /*Here we call another function called contains and SEND it two variables.
+        Functions CANNOT see variables that are inside other functions so contains()
+        cannot use the variable arrayWithStuff. By including it in the function call,
+        we send a COPY of the variable to the function, however.*/
+      if(contains(arrayWithStuff, "cat") || contains(arrayWithStuff, "dog")){
+        console.log("The array contains cat or a dog, or both (I'm not sure which).");
+      }
+      // || == OR, && == AND. So array needs to contain "cat" OR a "dog".
+      //Once it decides it contains a cat, it doesn't even check if dog is contained there.
+    }
+
+    /*function contains() accepts two variables. When we send arrayWithStuff to here,
+      a copy of that variable is saved to variable array. Variable thingWeAreLookingFor
+      first gets value "cat" (and later the value "dog").*/
+    function contains(array, thingWeAreLookingFor){
+
+      /*Classic use case for for loop. Going through an array. Here the program needs to
+        go through the array and decide if thingWeAreLookingFor is in it.*/
+        for(let i = 0; i < array.length; i++){ //This loop will repeat as long as i < length of the array.
+          console.log("Now we are deciding whether " + array[i] + " is " + thingWeAreLookingFor);
+          if(array[i] == thingWeAreLookingFor){
+            console.log("It was. Therefore we return true and stop this function.");
+            return true;
+          }
+          else{
+            console.log("It wasn't so we move on to next round of looping.");
+          }
+
+        }//Curly bracket closing the for loop
+
+        /*Once we have gone through the whole loop and we haven't found the thingWeAreLookingFor,
+          we can deduce that it is not included in the array and return false instead.*/
+          console.log("I have looked through the array and since I made it this far (did not return true), it seems like I did not find the value I was looking for.");
+          return false;
+
+      } //Curly bracket closing the function, don't forget this!
+
+
+      //This function WILL NOT be executed UNTIL it is called when the button is pressed.
+      function buttonPressed(){
+
+        /*Using the Document Object Model (DOM), we are accessing an element in the document
+          with id "output".*/
+        document.getElementById("output").innerHTML = "Hello World";
+
+        //Every p -element in the document will be saved to variable paragraphs.
+        var paragraphs = document.getElementsByTagName("p");
+        //Because there are multiple p-elements, paragraphs becomes an array.
+
+        paragraphs[0].style.color = "pink"; //This will change color of element in the paragraphs[0] (the first p-element) to pink.
+      }
+
+    </script>
+  </body>
+</html>
